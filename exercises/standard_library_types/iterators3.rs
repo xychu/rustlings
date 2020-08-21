@@ -7,8 +7,6 @@
 // Execute `rustlings hint iterators3` to get some hints!
 // Have fun :-)
 
-// I AM NOT DONE
-
 #[derive(Debug, PartialEq, Eq)]
 pub enum DivisionError {
     NotDivisible(NotDivisibleError),
@@ -24,7 +22,25 @@ pub struct NotDivisibleError {
 // This function should calculate `a` divided by `b` if `a` is
 // evenly divisible by b.
 // Otherwise, it should return a suitable error.
-pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {}
+pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
+    if b == 0 {
+        Err(DivisionError::DivideByZero)
+    } else {
+        let mut remain = a;
+        let mut result = 0;
+        while remain >= b {
+            remain -= b;
+            result += 1;
+        }
+        match remain {
+            0 => Ok(result),
+            _ => Err(DivisionError::NotDivisible(NotDivisibleError {
+                dividend: a,
+                divisor: b,
+            })),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -58,12 +74,13 @@ mod tests {
     }
 
     // Iterator exercises using your `divide` function
-    /*
     #[test]
     fn result_with_list() {
         let numbers = vec![27, 297, 38502, 81];
         let division_results = numbers.into_iter().map(|n| divide(n, 27));
-        let x //... Fill in here!
+        //let x: Result<Vec<_>, DivisionError> = division_results.collect();
+        //let x = division_results.collect::<Result<Vec<_>, DivisionError>>();
+        let x = division_results.collect::<Result<Vec<_>, _>>();
         assert_eq!(format!("{:?}", x), "Ok([1, 11, 1426, 3])");
     }
 
@@ -71,8 +88,9 @@ mod tests {
     fn list_of_results() {
         let numbers = vec![27, 297, 38502, 81];
         let division_results = numbers.into_iter().map(|n| divide(n, 27));
-        let x //... Fill in here!
+        //let x: Vec<_> = division_results.collect();
+        //let x = division_results.collect::<Vec<Result<i32, DivisionError>>>();
+        let x = division_results.collect::<Vec<_>>();
         assert_eq!(format!("{:?}", x), "[Ok(1), Ok(11), Ok(1426), Ok(3)]");
     }
-    */
 }
