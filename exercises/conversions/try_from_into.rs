@@ -2,7 +2,7 @@
 // Basically, this is the same as From. The main difference is that this should return a Result type
 // instead of the target type itself.
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.TryFrom.html
-use std::convert::{TryInto, TryFrom};
+use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug)]
 struct Color {
@@ -10,8 +10,6 @@ struct Color {
     green: u8,
     blue: u8,
 }
-
-// I AM NOT DONE
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -26,6 +24,22 @@ struct Color {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = String;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if tuple.0 < 0 || tuple.0 > 255 {
+            panic!("Invaid color range!");
+        //Err("Invaid color range!".to_string())
+        } else if tuple.1 < 0 || tuple.1 > 255 {
+            //Err("Invaid color range!".to_string())
+            panic!("Invaid color range!");
+        } else if tuple.2 < 0 || tuple.2 > 255 {
+            //Err("Invaid color range!".to_string())
+            panic!("Invaid color range!");
+        } else {
+            Ok(Color {
+                red: tuple.0 as u8,
+                green: tuple.1 as u8,
+                blue: tuple.2 as u8,
+            })
+        }
     }
 }
 
@@ -33,6 +47,25 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = String;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr.len() != 3 {
+            //panic!("Invaid color size!");
+            Err("Invaid color size!".to_string())
+        } else if arr[0] < 0 || arr[0] > 255 {
+            Err("Invaid color range!".to_string())
+        //panic!("Invaid color range!");
+        } else if arr[1] < 0 || arr[1] > 255 {
+            Err("Invaid color range!".to_string())
+        //panic!("Invaid color range!");
+        } else if arr[2] < 0 || arr[2] > 255 {
+            Err("Invaid color range!".to_string())
+        //panic!("Invaid color range!");
+        } else {
+            Ok(Color {
+                red: arr[0] as u8,
+                green: arr[1] as u8,
+                blue: arr[2] as u8,
+            })
+        }
     }
 }
 
@@ -40,6 +73,23 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = String;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            //panic!("Invaid color size!");
+            Err("Invaid color size!".to_string())
+        } else if slice[0] < 0 || slice[0] > 255 {
+            //panic!("Invaid color range!");
+            Err("Invaid color range!".to_string())
+        } else if slice[1] < 0 || slice[1] > 255 {
+            Err("Invaid color range!".to_string())
+        } else if slice[2] < 0 || slice[2] > 255 {
+            Err("Invaid color range!".to_string())
+        } else {
+            Ok(Color {
+                red: slice[0] as u8,
+                green: slice[1] as u8,
+                blue: slice[2] as u8,
+            })
+        }
     }
 }
 
